@@ -94,13 +94,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 ### Built With
 
 * [![Selenium][selenium.dev]][Selenium-url]
-* [![BeautifulSoup][beautiful-soup-4.readthedocs.io]][BeautifulSoup-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![BeautifulSoup][beautifulsoup.io]][BeautifulSoup-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
