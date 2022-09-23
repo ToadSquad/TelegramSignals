@@ -32,14 +32,14 @@ class Trade():
         else:
             self.pips = self.PL*100
 
-        return self.symbol+" Timeframe "+self.timeframe+" Pattern "+self.pattern+" Hit TP for Profit of "+float(self.pips)+" pips"
+        return self.symbol+" Timeframe "+self.timeframe+" Pattern "+self.pattern+" Hit TP for Profit of "+str(self.pips)+" pips"
     def slHit(self) -> str:
         self.timeClose = datetime.datetime.now()
         if(self.symbol.count("jpy")==0):
             self.pips = self.PL*1000
         else:
             self.pips = self.PL*100
-        return self.symbol+" Timeframe "+self.timeframe+" Pattern "+self.pattern+" Hit SL for loss of "+float(self.pips)+" pips"
+        return self.symbol+" Timeframe "+self.timeframe+" Pattern "+self.pattern+" Hit SL for loss of "+str(self.pips)+" pips"
     
 
 
