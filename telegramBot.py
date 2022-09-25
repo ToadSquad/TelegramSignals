@@ -9,6 +9,8 @@ import pickle
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Trade():
@@ -60,6 +62,12 @@ class Signals():
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
+        self.chrome_options.add_argument('--shm-size=1g')
+        self.chrome_options.add_argument('--disable-gpu')
+        self.chrome_options.add_argument("start-maximized")
+        self.chrome_options.add_argument("enable-automation")
+        self.chrome_options.add_argument("--disable-dev-shm-usage")
+        self.chrome_options.add_argument("--disable-browser-side-navigation")
         #chrome_options.add_argument('--disable-dev-shm-usage')
         self.driver = None#webdriver.Chrome(self.PATH,options=chrome_options)
 
@@ -266,11 +274,11 @@ class Signals():
     
     #Returns Weekly Summmary from self.tradeList 
     def weeklySummary(self) -> None:
+        winCount = 0
+        lossCount = 0
+        totalPips = 0
+        unrealizedTrades = 0
         for trade in self.tradeList:
-            winCount = 0
-            lossCount = 0
-            totalPips = 0
-            unrealizedTrades = 0
             if(not trade.active and trade.timeClose > datetime.datetime.now() - datetime.timedelta(days=5)):
                 if(trade.pips<0):
                     lossCount+=1
@@ -288,7 +296,7 @@ class Signals():
         
         while True:
             #Market Open
-            if(datetime.datetime.now().weekday()==6 and datetime.datetime.now().hour == 17):
+            if(datetime.datetime.now().weekday()==6 and datetime.datetime.now().hour == 17 and datetime.datetime.now().minute == 0):
                 message = "-------Market Open!-------"
                 requests.get(self.url+'sendMessage?chat_id='+self.chatid+'&text='+message)
             #End of Market
@@ -301,14 +309,15 @@ class Signals():
                 #triggerList = []
             #Ran every 15 minutes check current candlestick patterns
             if(self.marketHours() and datetime.datetime.now().minute%15==0 or self.firstrun):
+                self.driver = webdriver.Chrome(ChromeDriverManager().install(),options=self.chrome_options)
                 for symbol in self.symbolDict:
-                    self.driver = webdriver.Chrome(self.PATH,options=self.chrome_options)
                     try:      
                        self.getCandlestickSignal(symbol)
                     except Exception as e:
                         print("ERROR MESSAGE")
                         print(e)
                         time.sleep(60)
+                
                 self.driver.quit()
                 print("Running Checks")
                 self.firstrun = False
